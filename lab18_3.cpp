@@ -1,100 +1,40 @@
 #include<iostream>
-#include<string>
-#include<fstream>
-#include<vector>
-#include<cstdlib>
-#include<iomanip>
-
+#include<set>
 using namespace std;
 
-struct student{
-//Define struct student with four member (name ,id , gender, gpa);
-string name;
-int id;
-char gender;
-float gpa;
-};
+//Write function count() here.
+#include<iostream>
+#include<set>
+using namespace std;
 
-struct course{
-string name;
-int id;
-vector<string> lecture_list;
-vector<student *> student_list;
-};
-
-student * findstudent(vector<student> &allstudents,int key){ //Correct this line
-for(unsigned int i = 0; i < allstudents.size(); i++){
-if(allstudents[i].id == key) return &allstudents[i];
-}
+//Write function count() here.
+int count(int x[],unsigned long long y){
+	set<int> mySet;
+	int count = 0;
+	for(int k = 0;k < y;k++){
+		mySet.insert(x[k]);
+	}
+	set<int>::iterator i;
+	for(i = mySet.begin(); i != mySet.end(); i++){
+		count++;
+	}
+	return count;
 }
 
-void printreport(vector<course> allcourses){
-for(unsigned int i = 0;i < allcourses.size(); i++){
-cout << "-----------------------------------------------------------------------------\n";
-cout << "Course:\t\t" << allcourses[i].name << " ("<< allcourses[i].id << ")\n\n";
-cout << "Lecturers:\t";
-for(unsigned int j = 0; j < allcourses[i].lecture_list.size();j++){
-if(j != 0) cout << ", ";
-cout << allcourses[i].lecture_list[j];
-}
-cout << "\n\nStudents:\t";
-for(unsigned int j = 0; j < allcourses[i].student_list.size();j++){
-if(j != 0) cout << "\t\t";
-cout << setw(15) << left << allcourses[i].student_list[j]->name << "\t";
-cout << allcourses[i].student_list[j]->id << "\t";
-cout << allcourses[i].student_list[j]->gender << "\t";
-cout << allcourses[i].student_list[j]->gpa << "\n";
-}
 
+int main(){	
+	int data[] = {1,2,4,5,4,8,2,1,2,4,6,1,4,4,4,2,1,0,12}; 
+	
+	cout << "There are " << count(data,sizeof(data)/sizeof(int)); 
+	cout << " different numbers in data.";
+	
+	return 0;
 }
-cout << "-----------------------------------------------------------------------------\n";
-}
-
-int main(){
-ifstream student_file("students.txt");
-ifstream course_file("courses.txt");
-vector<student> allstudents;
-vector<course> allcourses;
-
-string textline;
-
-while(getline(student_file,textline)){
-student s;
-char name[100];
-//Assign value to the members of struct s;
-char format[] = "%[^,],%d,%c,%f";
-sscanf(textline.c_str(),format,name,&s.id,&s.gender,&s.gpa);
-s.name = name;
-allstudents.push_back(s);
-}
-
-int state = 1;
-while(getline(course_file,textline)){
-if(state == 1){
-course c;
-int loc = textline.find_first_of('(');
-c.name = textline.substr(0,loc-1);
-c.id = atof(textline.substr(loc+1,5).c_str());
-getline(course_file,textline);
-allcourses.push_back(c);
-state = 2;
-}else if(state == 2){
-if(textline == "> Students"){
-state = 3;
-}else{
-//Append lecture_list;
-allcourses[allcourses.size()-1].lecture_list.push_back(textline);
-}
-}else{
-if(textline == "---------------------------------------"){
-state = 1;
-}else{
-student *p = findstudent(allstudents,atof(textline.c_str()));
-//Append student_list;
-allcourses[allcourses.size()-1].student_list.push_back(p);
-}
-}
-}
-printreport(allcourses);
-
+int main(){	
+	int data[] = {1,2,4,5,4,8,2,1,2,4,6,1,4,4,4,2,1,0,12}; 
+	
+	cout << "There are " << count(data,sizeof(data)/sizeof(int)); 
+	cout << " different numbers in data.";
+	
+	return 0;
 }
